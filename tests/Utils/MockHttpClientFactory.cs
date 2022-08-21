@@ -23,6 +23,11 @@ internal class MockHttpClientFactory : IHttpClientFactory
     {
         ArgumentNullException.ThrowIfNull(_mockHttpMessageHandler);
 
-        return _mockHttpMessageHandler.ToHttpClient();
+        if(string.IsNullOrEmpty(_baseUri))
+        {
+            return _mockHttpMessageHandler.ToHttpClient();
+        }
+
+        return new HttpClient(_mockHttpMessageHandler) { BaseAddress = new(_baseUri) };
     }
 }
